@@ -11,13 +11,14 @@ def cli():
     pass
 
 @cli.command()
-@click.option('-y', '--year', default='current', help='Specify the race year. Defaults to the current year')
+@click.option('-y', '--season', default='current', help='Specify the race season. Defaults to the current season')
 @click.option('-r', '--round', default='last', help='Specify the round number. Defaults to the latest round')
-def results(year, round):
+def results(season, round):
     '''
-    List the results for a specific or latest race
+    List the results for a specific race.\n
+    Displays the latest race by default
     '''
-    url = BASEPATH + f'{year}/{round}/results.json'
+    url = BASEPATH + f'{season}/{round}/results.json'
 
     resultTable = []
 
@@ -37,27 +38,28 @@ def results(year, round):
 
         resultTable.append([position, ' '.join(racerName), constructor, resultStatus])
 
-    raceYear = responseData['RaceTable']['Races'][0]['season']
+    raceSeason = responseData['RaceTable']['Races'][0]['season']
     raceName = responseData['RaceTable']['Races'][0]['raceName']
     raceLocation = responseData['RaceTable']['Races'][0]['Circuit']['Location']['country']
 
-    click.echo(f'Race results for the {raceYear} {raceName} in {raceLocation}:\n')
+    click.echo(f'Race results for the {raceSeason} {raceName} in {raceLocation}:\n')
 
     click.echo(tabulate(resultTable, headers=["Pos", "Racer", "Constructor","Status"]))
 
 
 @cli.command()
-@click.option('-y', '--year', default='current', help='Specify the race year. Defaults to the current year')
+@click.option('-y', '--season', default='current', help='Specify the race season. Defaults to the current season')
 @click.option('-n', '--next', default=False, help='Display the schedule for next race')
-def schedule(year, next):
+def schedule(season, next):
     '''
-    List the schedule for a specific or latest race
+    List the schedule for a specific race.\n
+    Displays the latest race by default
     '''
 
-    url = BASEPATH + f'{year}.json'
+    url = BASEPATH + f'{season}.json'
 
     if (next == True):
-        url = f'http://ergast.com/api/f1/{year}/next.json'    
+        url = BASEPATH + f'{season}/next.json'    
 
     scheduleTable = []
 
@@ -70,31 +72,32 @@ def schedule(year, next):
     responseData = response.json()['MRData']
 
     for result in responseData['RaceTable']['Races']:
-        raceYear = result['season']
+        raceSeason = result['season']
         raceRound = result['round']
         raceName = result['raceName']
         raceLocation = result['Circuit']['Location']['country']
         raceDate = result['date']
         raceTime = result['time']
 
-        scheduleTable.append([raceYear, raceRound, raceName, raceLocation, raceDate, raceTime])
+        scheduleTable.append([raceSeason, raceRound, raceName, raceLocation, raceDate, raceTime])
 
-    click.echo(tabulate(scheduleTable, headers=["Year", "Round", "Name", "Location", "Date", "Time"]))
+    click.echo(tabulate(scheduleTable, headers=["Season", "Round", "Name", "Location", "Date", "Time"]))
 
 @cli.command()
 @click.option('-s', '--standings', required=True, default='current', help='Specify whether you want to see the \'driver\' or \'constructor\' standings')
-@click.option('-y', '--year', default='current', help='Specify the race year. Defaults to the current year')
-def standings(standings, year):
+@click.option('-y', '--season', default='current', help='Specify the race season. Defaults to the current season')
+def standings(standings, season):
     '''
-    List the driver/constructor standings for a specific or current year
+    List the driver/constructor standings for a specific season.\n
+    Displays the current season by default
     '''
 
     url = BASEPATH
 
     if (standings == 'driver'):
-        url += f'{year}/driverStandings.json'
+        url += f'{season}/driverStandings.json'
     elif (standings == 'constructor'):
-        url += f'{year}/constructorStandings.json'
+        url += f'{season}/constructorStandings.json'
     else:
         click.echo('Value for \'standings\' not correct')
         return
