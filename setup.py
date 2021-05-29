@@ -11,7 +11,7 @@ CLASSIFIERS = [
 DEPENDENCIES = [
         'click~=8.0',
         'requests~=2.25',
-        'tabulate~=0.8',
+        'pandas~=1.2',
     ]
 
 HERE = pathlib.Path(__file__).parent

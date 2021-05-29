@@ -1,6 +1,6 @@
 import click
 import requests
-from tabulate import tabulate
+import pandas as pd
 
 BASEPATH = 'http://ergast.com/api/f1/'
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -11,7 +11,7 @@ def cli():
     pass
 
 @cli.command()
-@click.option('-y', '--season', default='current', help='Specify the race season. Defaults to the current season')
+@click.option('-s', '--season', default='current', help='Specify the race season. Defaults to the current season')
 @click.option('-r', '--round', default='last', help='Specify the round number. Defaults to the latest round')
 def results(season, round):
     '''
@@ -44,11 +44,13 @@ def results(season, round):
 
     click.echo(f'Race results for the {raceSeason} {raceName} in {raceLocation}:\n')
 
-    click.echo(tabulate(resultTable, headers=["Pos", "Racer", "Constructor","Status"]))
+    df = pd.DataFrame(data=resultTable, columns=["Pos", "Racer", "Constructor","Status"])
+    
+    click.echo(df.to_string(index=False))
 
 
 @cli.command()
-@click.option('-y', '--season', default='current', help='Specify the race season. Defaults to the current season')
+@click.option('-s', '--season', default='current', help='Specify the race season. Defaults to the current season')
 @click.option('-n', '--next', default=False, help='Display the schedule for next race')
 def schedule(season, next):
     '''
@@ -81,7 +83,9 @@ def schedule(season, next):
 
         scheduleTable.append([raceSeason, raceRound, raceName, raceLocation, raceDate, raceTime])
 
-    click.echo(tabulate(scheduleTable, headers=["Season", "Round", "Name", "Location", "Date", "Time"]))
+    df = pd.DataFrame(data=scheduleTable, columns=["Season", "Round", "Name", "Location", "Date", "Time"])
+    
+    click.echo(df.to_string(index=False))
 
 @cli.command()
 @click.option('-s', '--standings', required=True, default='current', help='Specify whether you want to see the \'driver\' or \'constructor\' standings')
@@ -122,7 +126,9 @@ def standings(standings, season):
 
             standingsTable.append([position, points, ' '.join(racerName), constructor])
 
-        click.echo(tabulate(standingsTable, headers=["Pos", "Points", "Racer", "Constructor"]))
+        df = pd.DataFrame(data=standingsTable, columns=["Pos", "Points", "Racer", "Constructor"])
+    
+        click.echo(df.to_string(index=False))
     else:
         for result in responseData['ConstructorStandings']:
             position = result['position']
@@ -131,4 +137,6 @@ def standings(standings, season):
 
             standingsTable.append([position, points, constructor])
 
-        click.echo(tabulate(standingsTable, headers=["Pos", "Points", "Constructor"]))
+        df = pd.DataFrame(data=standingsTable, columns=["Pos", "Points", "Constructor"])
+    
+        click.echo(df.to_string(index=False))
