@@ -45,33 +45,14 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-* virtualenv
-
-If you are on Mac OS X or Linux:
-
-```sh
-pip install virtualenv --user
-```
-
-or if you use Ubuntu, try:
-
-```sh
-sudo apt-get install python-virtualenv
-```
+* Python 3 >=3.8
 
 ### Installation
 
-To test the script, you can clone the repository, make a new virtualenv and then install the package:
-
 ```sh
-$ git clone origin https://github.com/halldorstefans/f1-cli.git
-$ virtualenv venv
+$ pip install formula1-cli
 ...
-$ . venv/bin/activate
-$ pip install --editable .
-...
-Successfully installed Formula-1-CLI
-
+Successfully installed formula1-cli...
 ```
 
 <!-- USAGE EXAMPLES -->

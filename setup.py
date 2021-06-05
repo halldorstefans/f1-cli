@@ -1,7 +1,8 @@
 import pathlib
-from setuptools import setup
+import formula1
+from setuptools import find_packages, setup
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 CLASSIFIERS = [
     'Programming Language :: Python :: 3.8',
@@ -18,7 +19,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(
-    name='formula-1-cli',
+    name='formula1-cli',
     version=VERSION,
     description='Formula 1 Command-Line Tools',
     long_description=README,
@@ -28,11 +29,12 @@ setup(
     author='Halldor Stefansson',
     author_email='halldor@halldorstefans.com',
     classifiers=CLASSIFIERS,
-    py_modules = ['f1'],
+    packages=find_packages(exclude=("tests",)),
     include_package_data=True,
     install_requires=DEPENDENCIES,
-    entry_points='''
-        [console_scripts]
-        f1=f1:cli
-    ''',
+    entry_points={
+        'console_scripts': [
+        'f1=formula1.f1:cli',
+        ]
+    },
 )
