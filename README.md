@@ -41,8 +41,6 @@ Formula 1 Command-Line Tool to get race results, schedule and standings
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
-
 ### Prerequisites
 
 * Python 3 >=3.8
