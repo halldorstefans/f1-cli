@@ -2,7 +2,7 @@ import pathlib
 import formula1
 from setuptools import find_packages, setup
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 CLASSIFIERS = [
     'Programming Language :: Python :: 3.8',
@@ -10,9 +10,9 @@ CLASSIFIERS = [
 ]
 
 DEPENDENCIES = [
-        'click~=8.0',
-        'requests~=2.25',
-        'pandas~=1.2',
+        'click>=8.0',
+        'requests>=2.25',
+        'pandas>=1.2',
     ]
 
 HERE = pathlib.Path(__file__).parent
