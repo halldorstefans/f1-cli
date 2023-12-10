@@ -2,7 +2,7 @@ import pathlib
 import formula1
 from setuptools import find_packages, setup
 
-VERSION = "0.1.2"
+VERSION = "0.2.0"
 
 CLASSIFIERS = [
     'Programming Language :: Python :: 3.8',

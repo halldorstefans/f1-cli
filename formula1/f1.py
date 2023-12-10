@@ -7,7 +7,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 def cli():
-    '''Formula 1 Command-Line Tool to get race results, schedule and standings'''
+    '''Formula 1 Command-Line Tool to get race results, qualifying, schedule and standings'''
     pass
 
 @cli.command()
@@ -44,7 +44,51 @@ def results(season, round):
 
     click.echo(f'Race results for the {raceSeason} {raceName} in {raceLocation}:\n')
 
-    df = pd.DataFrame(data=resultTable, columns=["Pos", "Racer", "Constructor","Status"])
+    df = pd.DataFrame(data=resultTable, columns=["Pos", "Racer", "Constructor", "Status"])
+    
+    click.echo(df.to_string(index=False))
+
+@cli.command()
+@click.option('-s', '--season', default='current', help='Specify the race season. Defaults to the current season')
+@click.option('-r', '--round', default='last', help='Specify the round number. Defaults to the latest round')
+def qualifying(season, round):
+    '''
+    List the qualifying results for a specific race.\n
+    Displays the latest qualifying by default
+    '''
+    url = BASEPATH + f'{season}/{round}/qualifying.json'
+
+    qualifyingTable = []
+
+    response = requests.get(url)
+    
+    if (response.ok == False):
+        click.echo(f'Something went wrong. Request returned status: {response.status_code} - {response.reason}')
+        return
+    
+    responseData = response.json()['MRData']
+
+    for result in responseData['RaceTable']['Races'][0]['QualifyingResults']:
+        position = result['position']
+        racerName = (result['Driver']['givenName'], result['Driver']['familyName'])
+        constructor = result['Constructor']['name']
+        qualifyingOne = result['Q1']
+        qualifyingTwo = ''
+        qualifyingThree = ''
+        if result.get('Q2') != None:
+            qualifyingTwo = result['Q2']
+        if result.get('Q3') != None:
+            qualifyingThree = result['Q3']
+
+        qualifyingTable.append([position, ' '.join(racerName), constructor, qualifyingOne, qualifyingTwo, qualifyingThree])
+
+    raceSeason = responseData['RaceTable']['Races'][0]['season']
+    raceName = responseData['RaceTable']['Races'][0]['raceName']
+    raceLocation = responseData['RaceTable']['Races'][0]['Circuit']['Location']['country']
+
+    click.echo(f'Qualifying results for the {raceSeason} {raceName} in {raceLocation}:\n')
+
+    df = pd.DataFrame(data=qualifyingTable, columns=["Pos", "Racer", "Constructor", "Q1", "Q2", "Q3"])
     
     click.echo(df.to_string(index=False))
 

@@ -1,3 +1,7 @@
+:warning: **THIS PROJECT IS NOT ACTIVE DUE TO THE FACT THE UNDERLYING API HAS BEEN DEPRECATED.** :warning:
+
+See [Ergast API Documentation.](https://ergast.com/mrd/)
+
 <!-- PROJECT OVERVIEW -->
 <br />
 <p align="center">
@@ -18,20 +22,21 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#project-name)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+- [Table of Contents](#table-of-contents)
+- [F1 CLI](#f1-cli)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
 ## F1 CLI
 
-Formula 1 Command-Line Tool to get race results, schedule and standings
+Formula 1 Command-Line Tool to get race results, qualifying, schedule and standings
 
 ### Built With
 
@@ -62,15 +67,17 @@ Afterwards, your command should be available:
 $ f1 --help
 Usage: f1 [OPTIONS] COMMAND [ARGS]...
 
-  Formula 1 Command-Line Tool to get race results, schedule and standings
+  Formula 1 Command-Line Tool to get race results, qualifying, schedule and
+  standings
 
 Options:
   -h, --help  Show this message and exit.
 
 Commands:
-  results    List the results for a specific or latest race
-  schedule   List the schedule for a specific or latest race
-  standings  List the driver/constructor standings for a specific or...
+  qualifying  List the qualifying results for a specific race.
+  results     List the results for a specific race.
+  schedule    List the schedule for a specific race.
+  standings   List the driver/constructor standings for a specific season.
 ```
 
 <!-- LICENSE -->
